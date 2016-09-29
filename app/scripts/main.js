@@ -47,7 +47,7 @@
       this._anim = null;
       this._dragged_down = false;
 
-      this.hammer = new Hammer(container);
+      this.hammer = new Hammer(pullElement);
       this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
       this.hammer.on("pandown panend panstart", function (ev) {
         self.handleHammer(ev);
@@ -81,7 +81,7 @@
             this.updateHeight();
           }
           ev.preventDefault();
-          this._slidedown_height = ev.deltaY * 0.4;
+          this._slidedown_height = ev.deltaY * 1;
 
           break;
       }
