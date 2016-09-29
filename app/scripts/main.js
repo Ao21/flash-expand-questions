@@ -33,6 +33,8 @@
     )
   );
 
+  let open = false;
+
 
   var PanRecognizer = (function () {
     function Main(container, pullElement, handler) {
@@ -42,6 +44,7 @@
       this.container = container;
       this.pullElement = pullElement;
       this.handler = handler;
+      this.open = false;
 
       this._slidedown_height = 0;
       this._anim = null;
@@ -64,9 +67,9 @@
           if (!this._dragged_down) {
             return;
           }
-
           cancelAnimationFrame(this._anim);
           if (ev.deltaY >= this.toggleDelta) {
+            this.open = true;
             this.handler.call(this);
 
           }
@@ -151,30 +154,41 @@
   let pan = new PanRecognizer(document.getElementById('question'), document.getElementById('questionToggle'));
 
   pan.handler = function (ev) {
-    anime({
-      targets: '.help-text',
-      marginTop: {
-        value: 5,
-        duration: 300,
-        easing: 'easeInOutExpo'
-      },
-      marginBottom: {
-        value: 0,
-        duration: 300,
-        easing: 'easeInOutExpo'
-      },
-      maxHeight: {
-        value: '100%',
-        duration: 300
-      },
-      opacity: {
-        value: [0, 1],
-        delay: 50,
-        duration: 350,
-        easing: 'easeInOutExpo'
-      },
-    })
+    if (!open) {
+      window.animation = anime({
+        targets: '.help-text',
+        marginTop: {
+          value: [0, 10],
+          duration: 300,
+          easing: 'easeInOutExpo'
+        },
+        marginBottom: {
+          value: [0,5],
+          duration: 300,
+          easing: 'easeInOutExpo'
+        },
+        maxHeight: {
+          value: ['0%', '100%'],
+          duration: 300
+        },
+        opacity: {
+          value: [0, 1],
+          delay: 50,
+          duration: 350,
+          easing: 'easeInOutExpo'
+        },
+      })
+      open = true;
+    } else {
+      let elements = document.getElementsByClassName('help-text');
+      for (var i = 0; i < elements.length; i++){
+        console.log(elements[i]);
+        elements[i].removeAttribute('style');
+      }
+      open = false;
+    }
   }
+
 
 
 
